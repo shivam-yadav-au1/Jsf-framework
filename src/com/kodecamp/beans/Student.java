@@ -1,5 +1,7 @@
 package com.kodecamp.beans;
 
+import com.kodecamp.framework.NavigationRules;
+
 public class Student {
 	
 	private String rollno;
@@ -69,7 +71,7 @@ public class Student {
 	public String submit() {
 		System.out.println("Name : "+this.name);
 		System.out.println("Address : "+this.address);
-		return "/views/student_details2.jsp";
+		return NavigationRules.NAV_STUDENT_DETAILS;
 	}
 	
 

@@ -11,7 +11,7 @@
 
 <form action="${pageContext.request.contextPath}/controller" method = "post">
 <input type="hidden" name="bean-name" value="studentBean">
-<input type="hidden" name="bean-class" value="com.kodecamp.beans.student">
+<input type="hidden" name="bean-class" value="com.kodecamp.beans.Student">
 <ul>
 	<li>Name</li>
 	<li><input type="text" name="Name"></li>

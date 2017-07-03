@@ -22,7 +22,11 @@ public class CentralServlet extends HttpServlet {
 		String actionName = req.getParameter("action");
 		String beanClass = req.getParameter("bean-class");
 		String beanName = req.getParameter("bean-name");
-
+		System.out.println("<------------------ bean details --------------------------");
+		System.out.println("action : " + actionName);
+		System.out.println("bean-class : " + beanClass);
+		System.out.println("bean-name : " + beanName);
+		System.out.println("<------------------ bean details --------------------------");
 		Object beanObj = null;
 		try {
 			beanObj = Class.forName(beanClass).newInstance();
@@ -40,12 +44,16 @@ public class CentralServlet extends HttpServlet {
 	}
 
 	private void mapBeanToRequestValues(Object beanObj, HttpServletRequest req) {
-
+		System.out.println("bean obj : " + beanObj);
 		Map<String, String[]> params = req.getParameterMap();
 		for (String param : params.keySet()) {
 			try {
-
-				beanObj.getClass().getMethod("set" + param, String.class).invoke(beanObj, req.getParameter(param));
+				System.out.println("param : " + param);
+				String methodName = "set"+param;
+				System.out.println();
+				Method method = beanObj.getClass().getMethod(methodName, String.class);
+				System.out.println("Method instance : " + method);
+				method.invoke(beanObj, req.getParameter(param));
 
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
 					| NoSuchMethodException | SecurityException e) {
@@ -61,7 +69,9 @@ public class CentralServlet extends HttpServlet {
 		String view = "";
 
 		try {
-			view = (String) beanObj.getClass().getMethod(actionName).invoke(beanObj);
+			String mappedVeiwValue = (String) beanObj.getClass().getMethod(actionName).invoke(beanObj);
+			view = NavigationRules.navigationMap.get(mappedVeiwValue);
+			
 		} catch (NoSuchMethodException | SecurityException e) {
 			System.err.println("Invalid Action :" + e.getMessage());
 		} catch (IllegalAccessException e) {
@@ -72,7 +82,7 @@ public class CentralServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		return null;
+		return view;
 	}
 
 }
